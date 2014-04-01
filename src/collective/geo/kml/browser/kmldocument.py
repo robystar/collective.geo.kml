@@ -47,6 +47,8 @@ def absoluteURL(ob, request):
 def coords_to_kml(geom):
     gtype = geom.type
     coordlist = []
+
+
     if gtype == 'Point':
         coords = (geom.coordinates,)
         coordlist.append(coords)
@@ -62,20 +64,28 @@ def coords_to_kml(geom):
         coordlist = [c[0] for c in geom.coordinates]
     elif gtype == 'MultiLineString':
         coordlist = geom.coordinates
+    elif gtype == 'Track':
+        coordlist = [[c[0],c[1],c[2]] for c in geom.coordinates]
+        time_list = [t[3] for t in geom.coordinates]
     else:
         raise ValueError("Invalid geometry type")
     coords_kml = []
+
     for coordinates in coordlist:
-        if len(coordinates[0]) == 2:
+        if len(coordinates) == 3:
+            tuples = ('%f' % c for c in coordinates)
+        elif len(coordinates[0]) == 2:
             tuples = ('%f,%f,0.0' % tuple(c) for c in coordinates)
         elif len(coordinates[0]) == 3:
             tuples = ('%f,%f,%f' % tuple(c) for c in coordinates)
         else:
             raise ValueError("Invalid dimensions")
         coords_kml.append(' '.join(tuples))
+    
     if gtype in ['Point', 'Polygon', 'LineString']:
         return coords_kml[0]
     else:
+        #import pdb;pdb.set_trace()
         return coords_kml
 
 
@@ -157,11 +167,20 @@ class Placemark(Feature):
         return int(self.geom.type == 'MultiPolygon')
 
     @property
+    def hasTrack(self):
+        return int(self.geom.type == 'Track')
+
+    @property
     def coords_kml(self):
         try:
             return coords_to_kml(self.geom)
         except:
             pass
+
+    @property
+    def time_list(self):
+        return [t[3] for t in self.geom.coordinates]
+        #return ['1','2','3']
 
     @property
     def properties_vocabulary_labels(self):

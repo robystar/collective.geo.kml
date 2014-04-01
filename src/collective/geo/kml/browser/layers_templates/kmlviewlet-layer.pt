@@ -3,7 +3,8 @@ function(){
         protocol: new OpenLayers.Protocol.HTTP({
             url: '%s'+'@@kml-document',
             format: new OpenLayers.Format.KML({
-                        extractStyles: true,
+                        extractTracks: true,
+                        extractStyles: false,
                         extractAttributes: true})
             }),
             strategies: [new OpenLayers.Strategy.Fixed()],

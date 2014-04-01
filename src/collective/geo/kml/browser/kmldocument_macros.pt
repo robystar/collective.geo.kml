@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <kml xmlns="http://www.opengis.net/kml/2.2"
+     xmlns:gx="http://www.google.com/kml/ext/2.2"
      xmlns:atom="http://www.w3.org/2005/Atom"
      xmlns:metal="http://xml.zope.org/namespaces/metal"
      xmlns:tal="http://xml.zope.org/namespaces/tal"
@@ -123,6 +124,14 @@
             </outerBoundaryIs>
             </Polygon>
         </MultiGeometry>
+        <gx:Track tal:condition="hasTrack">
+          <when tal:repeat="time_value time_list" tal:content="time_value">
+            TIMESTAMP
+          </when>
+          <gx:coord tal:repeat="kml_coords coords_kml" tal:content="kml_coords">
+            COORDINATE LIST
+          </gx:coord>
+        </gx:Track>
       </Placemark>
       </metal:placemark>
 

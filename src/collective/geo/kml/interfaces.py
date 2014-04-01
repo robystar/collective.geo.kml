@@ -24,6 +24,7 @@ class IPlacemark(IFeature):
     hasLineString = Attribute("""Boolean, True if has a line location""")
     hasPoint = Attribute("""Boolean, True if has a point location""")
     hasPolygon = Attribute("""Boolean, True if has a polygon location""")
+    hasTrack = Attribute("""Boolean, True if has a GPS track""")
 
 
 class IContainer(IFeature):
