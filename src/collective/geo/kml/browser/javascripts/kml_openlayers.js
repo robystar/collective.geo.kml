@@ -56,7 +56,7 @@
                     var ret;
                     e.feature.attributes['state']=0;
                     ret = countf % 10 == 1;
-                    countf++
+                    countf++;
                     return ret;
                 })
 
