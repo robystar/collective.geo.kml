@@ -5,6 +5,7 @@
 
 
   $(function () {  
+
     Proj4js.defs["EPSG:3003"] = "+proj=tmerc +lat_0=0 +lon_0=9 +k=0.999600 +x_0=1500000 +y_0=0 +ellps=intl +units=m +no_defs +towgs84=-104.1,-49.1,-9.9,0.971,-2.917,0.714,-11.68";
     var epsg3003 = new OpenLayers.Projection('EPSG:3003');
     var $video = $("video").get(0);
@@ -63,7 +64,7 @@
                     countf++;
                     return ret;
                 })
-               
+                document.getElementById('description').innerHTML = '<span id="video-coordinates" style=float:left></span><span style=float:right><a href="'+kmlLayer.protocol.url+'">Scarica il tracciato</a></span>'
                 select = new OpenLayers.Control.SelectFeature(kmlLayer,{clickout: true});
 
                 kmlLayer.styleMap = styleMap;
@@ -100,7 +101,10 @@
                     var geom = point.geometry.clone();
 
                     geom.transform(mercator, epsg3003);
-                    document.getElementById('description').innerHTML = 'X: ' + geom.x.toFixed(1) + ' Y: ' + geom.y.toFixed(1) + ' Depth: ' + geom.z.toFixed(1)
+                    var info = 'X: ' + geom.x.toFixed(1) + ' Y: ' + geom.y.toFixed(1) + ' Depth: ' + point.attributes.altitude;// geom.z.toFixed(1)
+                    document.getElementById('video-coordinates').innerHTML = info;
+                    
+
                     kmlLayer.redraw()
 
                 }, false);
@@ -145,7 +149,7 @@
                     var geom3003 = feature.geometry.clone();
                     geom3003.transform(mercator, epsg3003);
                     msg += '<p>X: ' + geom3003.x.toFixed(1) + ' Y: ' + geom3003.y.toFixed(1) + '</p>';
-                    msg += '<p>Depth: ' + geom.z.toFixed(1) + '</p>';
+                    msg += '<p>Depth: ' + feature.attributes.altitude + '</p>';
                     
                     var popup = new OpenLayers.Popup.FramedCloud(
                         "chicken",
@@ -186,3 +190,5 @@
 
 
 }(jQuery));
+
+
