@@ -60,7 +60,7 @@
                 kmlLayer.events.register("beforefeatureadded", this, function(e){
                     var ret;
                     e.feature.attributes['state']=0;
-                    ret = countf % 4 == 1;
+                    ret = countf % 2 == 1;
                     countf++;
                     return ret;
                 })
